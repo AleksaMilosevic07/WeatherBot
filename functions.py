@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, datetime 
 
 # Dont change anything here, head over to config.json if you wish to manually write your keys there
 configuration = {
@@ -31,7 +31,15 @@ def testConnection():
     return results
 
 # Returns a dictionary with data received from OpenWeatherMap
-def requestWeatherData(weatherKey):
-    r = requests.get(weatherKey)
+def requestWeatherData(weatherKey, city):
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weatherKey}"
+    r = requests.get(url)
     WeatherData = r.json()
-    return WeatherData
+    data = {}
+    data["Location"] = WeatherData["name"]
+    data["Country"] = WeatherData["sys"]["country"]
+    data["Longitude / Latitude"] = f"{WeatherData['coord']['lon']} / {WeatherData['coord']['lat']}"
+    data["Weather"] = WeatherData["weather"][0]["main"]
+    data["Description"] = WeatherData["weather"][0]["description"]
+    data["Temperature"] = round(WeatherData["main"]["feels_like"] - 273.15, 2)
+    return data
