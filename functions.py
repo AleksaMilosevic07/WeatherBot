@@ -25,7 +25,7 @@ def changeConfig(weatherKey = "", webhookUrl = ""):
 def testConnection():
     results = {}
     weatherKey, DiscordWebHook = getKeys()
-    url = f"https://api.openweathermap.org/data/2.5/weather?q=NewYork&appid={weatherKey}"
+    url = f'https://api.openweathermap.org/data/2.5/weather?q="New York"&appid={weatherKey}'
     r = requests.get(url)
     results["WeatherAPI"] = r.status_code
     r = requests.get(DiscordWebHook)
