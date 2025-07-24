@@ -8,7 +8,8 @@ configuration = {
 
 # Does what it says, returns current configured keys
 def getKeys():
-    f = json.load(open("config.json", "r"))
+    f = open("config.json", "r")
+    f = json.load(f)
     weatherKey = f["weatherKey"]
     DiscordWebHook = f["DiscordWebHook"]
     return weatherKey, DiscordWebHook
@@ -25,7 +26,7 @@ def testConnection():
     results = {}
     weatherKey, DiscordWebHook = getKeys()
     url = f"https://api.openweathermap.org/data/2.5/weather?q=NewYork&appid={weatherKey}"
-    r = requests.get(weatherKey)
+    r = requests.get(url)
     results["WeatherAPI"] = r.status_code
     r = requests.get(DiscordWebHook)
     results["DiscordWebhook"] = r.status_code
