@@ -1,5 +1,5 @@
 import requests, functions, json
-decision = input('Welcome to weather app!\nWhat would you like to do?:\n1. "s" for setup/configuration\n2. "d" to request data\n3. "t" to test the connection 4. "q" to exit\n')
+decision = input('Welcome to weather app!\nWhat would you like to do?:\n1. "s" for setup/configuration\n2. "d" to request data\n3. "t" to test the connection\n4. "q" to exit\n')
 while decision != "q":
     match decision:
         case "s": 
