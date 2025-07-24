@@ -42,13 +42,15 @@ def requestWeatherData(weatherKey, city):
     data["Weather"] = WeatherData["weather"][0]["main"]
     data["Description"] = WeatherData["weather"][0]["description"]
     data["Temperature"] = round(WeatherData["main"]["feels_like"] - 273.15, 2)
+    data["Humidity"] = WeatherData["main"]["humidity"]
+    data["Pressure"] = WeatherData["main"]["pressure"]
     return data
 
 # Converts data into a readable format for the user, sends the same data to discord webhook
 def sendData(data, discord):
     message = ""
     for key, value in data.items():
-                print(f"{key}: {value}\n")
+                print(f"{key}: {value}")
                 message += f"{key}: {value}\n"
     requests.post(discord, json={"content": message})
     
