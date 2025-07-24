@@ -10,5 +10,5 @@ It includes a config.json file to remember your:
 - Automatic scheduling, send updates to Discord webhook in a scheduled user-defined intervals
 - Weather forecast and alerts for severe weather conditions
 - Error handling
-
+- Discord responses in pretty embeds
   
