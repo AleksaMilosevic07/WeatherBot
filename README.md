@@ -7,7 +7,7 @@ It includes a config.json file to remember your:
 - OpenWeatherMap API key
 - Discord Webhook URL
 # Planned features
-- Automatic scheduling, send information to Discord webhook in a scheduled routene defined by the user
-- Weather forecast and warnings for bad weather
+- Automatic scheduling, send updates to Discord webhook in a scheduled user-defined intervals
+- Weather forecast and alerts for severe weather conditions
 
   
