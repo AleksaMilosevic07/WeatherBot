@@ -1,5 +1,5 @@
 import requests, functions, json
-decision = input('Welcome to weather app!\nWhat would you like to do?:\n1. "s" for setup/configuration\n2. "d" to request data\n3. "q" to exit\n')
+decision = input('Welcome to weather app!\nWhat would you like to do?:\n1. "s" for setup/configuration\n2. "d" to request data\n3. "t" to test the connection 4. "q" to exit\n')
 while decision != "q":
     match decision:
         case "s": 
@@ -12,9 +12,11 @@ while decision != "q":
             key, discord = f["weatherKey"], f["DiscordWebHook"]
             city = input("Which city would you like to view?: ")
             data = functions.requestWeatherData(key, city)
-            for key, value in data.items():
-                print(f"{key}: {value}\n")
-            requests.post(discord, data)
+            functions.sendData(data, discord)
+        case "t":
+            results = functions.testConnection()
+            for type, status in results.items():
+                print(f"{type}: {status}") 
         case "q":
             exit()
-    decision = input('s - setup, d - request data, q - quit: ')
+    decision = input('s - setup, d - request data, t - test connection, q - quit: ')
