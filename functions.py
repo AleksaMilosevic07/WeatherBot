@@ -26,26 +26,41 @@ def testConnection():
     results = {}
     weatherKey, DiscordWebHook = getKeys()
     url = f'https://api.openweathermap.org/data/2.5/weather?q=New York&appid={weatherKey}'
-    r = requests.get(url)
-    results["WeatherAPI"] = r.status_code
-    r = requests.get(DiscordWebHook)
-    results["DiscordWebhook"] = r.status_code
+    try:
+        r = requests.get(url)
+        results["WeatherAPI"] = r.status_code
+    except Exception:
+        results["WeatherAPI"] = -1
+    try:
+        r = requests.get(DiscordWebHook)
+        results["DiscordWebhook"] = r.status_code
+    except Exception:
+        results["DiscordWebhook"] = -1
     return results
 
 # Returns a dictionary with data received from OpenWeatherMap
 def requestWeatherData(weatherKey, city):
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weatherKey}"
-    r = requests.get(url)
-    WeatherData = r.json()
-    data = {}
-    data["Location"] = WeatherData["name"]
-    data["Country"] = WeatherData["sys"]["country"]
-    data["Longitude / Latitude"] = f"{WeatherData['coord']['lon']} / {WeatherData['coord']['lat']}"
-    data["Weather"] = WeatherData["weather"][0]["main"]
-    data["Description"] = WeatherData["weather"][0]["description"]
-    data["Temperature"] = round(WeatherData["main"]["feels_like"] - 273.15, 2)
-    data["Humidity"] = WeatherData["main"]["humidity"]
-    data["Pressure"] = WeatherData["main"]["pressure"]
+    t = testConnection()
+    if t["WeatherAPI"] != 200:
+        print(f"Invalid connection! Error code: {t["WeatherAPI"]}")
+        return
+    else:    
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weatherKey}"
+        try:
+            r = requests.get(url)
+            WeatherData = r.json()
+            data = {}
+            data["Location"] = WeatherData["name"]
+            data["Country"] = WeatherData["sys"]["country"]
+            data["Longitude / Latitude"] = f"{WeatherData['coord']['lon']} / {WeatherData['coord']['lat']}"
+            data["Weather"] = WeatherData["weather"][0]["main"]
+            data["Description"] = WeatherData["weather"][0]["description"]
+            data["Temperature"] = round(WeatherData["main"]["feels_like"] - 273.15, 2)
+            data["Humidity"] = WeatherData["main"]["humidity"]
+            data["Pressure"] = WeatherData["main"]["pressure"]
+        except Exception:
+            print("Can't retrieve information about that city!")
+            return
     return data
 
 # Converts data into a readable format for the user, sends the same data to discord webhook
@@ -54,6 +69,8 @@ def sendData(data, discord):
     for key, value in data.items():
                 print(f"{key}: {value}")
                 message += f"{key}: {value}\n"
-    requests.post(discord, json={"content": message})
-    
+    try:
+        requests.post(discord, json={"content": message})
+    except Exception:
+        print("Couldn't send information to discord. ")    
     
