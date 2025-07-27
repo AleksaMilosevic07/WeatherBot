@@ -10,12 +10,9 @@ while decision != "q":
                 f = open("config.json", "r")
                 f = json.load(f)
                 key, discord = f["weatherKey"], f["DiscordWebHook"]
-                try:
-                    city = input("Which city would you like to view?: ")
-                    data = functions.requestWeatherData(key, city)
-                    functions.sendData(data, discord)
-                except Exception:
-                    print("Can't find that city.")
+                city = input("Which city would you like to view?: ")
+                data = functions.requestWeatherData(key, city)
+                functions.sendData(data, discord)
             case "t":
                 results = functions.testConnection()
                 for type, status in results.items():

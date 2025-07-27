@@ -6,6 +6,10 @@ configuration = {
   "DiscordWebHook": ""
 }
 
+
+
+
+
 # Does what it says, returns current configured keys
 def getKeys():
     f = open("config.json", "r")
@@ -65,12 +69,27 @@ def requestWeatherData(weatherKey, city):
 
 # Converts data into a readable format for the user, sends the same data to discord webhook
 def sendData(data, discord):
-    message = ""
+    embed_fields = []
     for key, value in data.items():
-                print(f"{key}: {value}")
-                message += f"{key}: {value}\n"
+        print(f"{key}: {value}")
+        embed_fields.append({
+            "name": key,
+            "value": value,
+            "inline": False 
+        })        
+    # Making the discord embed
+    discord_embed = {
+    "content": "",  
+    "embeds": [
+        {
+            "title": data["Location"],
+            "color": 701682,
+            "fields": embed_fields 
+        }
+    ]
+    }
     try:
-        requests.post(discord, json={"content": message})
+        requests.post(discord, json=discord_embed)
     except Exception:
         print("Couldn't send information to discord. ")    
     
