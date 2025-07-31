@@ -74,19 +74,19 @@ def sendData(data, discord):
         print(f"{key}: {value}")
         embed_fields.append({
             "name": key,
-            "value": value,
+            "value": str(value),
             "inline": False 
         })        
     # Making the discord embed
     discord_embed = {
-    "content": "",  
-    "embeds": [
-        {
-            "title": data["Location"],
-            "color": 701682,
-            "fields": embed_fields 
-        }
-    ]
+        "content": "",  
+        "embeds": [
+            {
+                "title": data["Location"],
+                "color": 701682,
+                "fields": embed_fields 
+            }   
+        ]
     }
     try:
         requests.post(discord, json=discord_embed)
